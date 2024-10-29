@@ -2,8 +2,19 @@
 
 * {
   font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.app {
+  margin-top: 200px;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
   text-decoration: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center components horizontally */
+  gap: 1rem; /* Adds spacing between components */
+  width: 100%; /* Ensures the container takes the full width */
 }
