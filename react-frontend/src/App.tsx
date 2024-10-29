@@ -1,12 +1,18 @@
 import "./App.css";
 import Entries from "./Components/Entries/Entries";
-import Navbar from "./Components/Navbar/Navbar";
+import Sidebar from "./Components/Sidebar/Sidebar";
+import Searchbar from "./Components/Searchbar/Searchbar";
+import AddDialog from "./Components/AddDialog/AddDialog";
 
 function App() {
   return (
     <div className="app">
-      <Navbar />
-      <Entries />
+      <Sidebar />
+      <div className="main">
+        <Searchbar />
+        <Entries />
+        <AddDialog />
+      </div>
     </div>
   );
 }
