@@ -1,16 +1,18 @@
 from flask import jsonify, request, Flask
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-passwords = []
+entries = []
 
-@app.route('/api/passwords', methods=['GET'])
+@app.route('/api/entries', methods=['GET'])
 def get_passwords():
-    return jsonify(passwords)
+    return jsonify(entries)
 
 def add_password():
     data = request.json
-    passwords.append(data)
+    entries.append(data)
     return jsonify(data), 201
 
 if __name__ == '__main__':
