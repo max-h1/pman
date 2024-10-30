@@ -1,0 +1,33 @@
+.modal-overlay {
+  position: fixed; /* Ensures it covers the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Places it above other content */
+}
+
+.modal-content {
+  background-color: #ffffff; /* White background for contrast */
+  padding: 20px; /* Space inside the modal */
+  border-radius: 8px; /* Rounded corners */
+  max-width: 500px; /* Limit width */
+  width: 100%; /* Make it responsive */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for depth */
+  position: relative; /* Position relative for internal positioning */
+  z-index: 1001; /* Higher than overlay */
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

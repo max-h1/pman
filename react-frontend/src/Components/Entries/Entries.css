@@ -67,3 +67,8 @@
   display: flex;
   gap: 5px;
 }
+
+#entries-head {
+  display: flex;
+  justify-content: space-between;
+}

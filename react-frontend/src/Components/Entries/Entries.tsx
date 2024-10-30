@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import "./Entries.css";
 import { v4 as uuid } from "uuid";
+import Searchbar from "../Searchbar/Searchbar";
 
 // Define the shape of each password entry
 type Entry = { id: string; service: string; user: string; password: string };
@@ -53,7 +54,11 @@ const Entries = () => {
 
   return (
     <div className="entries">
-      <h2>Entries</h2>
+      <div id="entries-head">
+        <h2>Entries</h2>
+        <Searchbar />
+        <button id="openNewEntryModal">New</button>
+      </div>
       <div className="input-wrapper">
         <input
           type="text"
