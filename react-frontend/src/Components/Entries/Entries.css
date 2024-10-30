@@ -83,17 +83,6 @@
   margin: 0;
 }
 
-/* Search bar styling for consistent alignment */
-#entries-head input[type="text"] {
-  padding: 8px 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  outline: none;
-  font-size: 1rem;
-  width: 600px; /* Adjust based on your layout */
-  margin-left: 20px; /* Spacing from the button */
-}
-
 /* Styling for the 'New' button */
 #openNewEntryModal {
   padding: 8px 16px;

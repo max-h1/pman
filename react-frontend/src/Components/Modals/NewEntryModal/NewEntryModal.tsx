@@ -3,13 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 import Modal from "../Modal";
+import { ModalProps } from "../Modal";
 
 type Entry = { id: string; service: string; user: string; password: string };
-interface NewEntryModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-const NewEntryModal: React.FC<NewEntryModalProps> = ({ isOpen, onClose }) => {
+
+const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [newEntry, setNewEntry] = useState<Entry>({
     id: "",
     service: "",

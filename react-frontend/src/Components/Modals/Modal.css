@@ -39,3 +39,14 @@
 #title {
   font-size: larger;
 }
+
+.inputs {
+  display: grid;
+  width: 80%;
+  margin-top: 20px;
+}
+
+.inputs * {
+  padding: 10px;
+  margin: 5px;
+}

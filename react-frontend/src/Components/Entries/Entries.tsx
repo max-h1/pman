@@ -4,15 +4,14 @@ import "./Entries.css";
 import { v4 as uuid } from "uuid";
 import Searchbar from "../Searchbar/Searchbar";
 import NewEntryModal from "../Modals/NewEntryModal/NewEntryModal";
-
-// Define the shape of each password entry
-type Entry = { id: string; service: string; user: string; password: string };
+import EditEntryModal from "../Modals/EditEntryModal/EditEntryModal";
+import { Entry } from "../../types";
 
 const Entries = () => {
   // Type the state variables to match PasswordEntry
   const [entries, setEntries] = useState<Entry[]>([]);
   const [newEntry, setNewEntry] = useState<Entry>({
-    id: "",
+    id: uuid,
     service: "",
     user: "",
     password: "",
@@ -24,10 +23,35 @@ const Entries = () => {
     return entry.service.includes(searchQuery);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNewEntryModalOpen, setIsNewEntryModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openNewEntryModal = () => setIsNewEntryModalOpen(true);
+  const closeNewEntryModal = () => setIsNewEntryModalOpen(false);
+
+  const [isEditEntryModalOpen, setIsEditEntryModalOpen] = useState(false);
+  const [currentEntry, setCurrentEntry] = useState<Entry | null>(null); // Track entry being edited
+
+  // Open the modal and set the entry to be edited
+  const openEditModal = (entry: Entry) => {
+    setCurrentEntry(entry);
+    setIsEditEntryModalOpen(true);
+  };
+
+  // Close the modal
+  const closeEditModal = () => {
+    setIsEditEntryModalOpen(false);
+    setCurrentEntry(null);
+  };
+
+  // Save the edited entry and update the entries list
+  const saveEditedEntry = (updatedEntry: Entry) => {
+    setEntries(
+      entries.map((entry) =>
+        entry.id === updatedEntry.id ? updatedEntry : entry
+      )
+    );
+    closeEditModal();
+  };
 
   useEffect(() => {
     axios
@@ -38,7 +62,7 @@ const Entries = () => {
       .catch((error) => console.error("Error fetching passwords:", error));
   }, []);
 
-  const deleteEntry = (id: string) => {
+  const deleteEntry = (id: typeof uuid) => {
     axios
       .delete(`http://127.0.0.1:5000/api/entries/${id}`, {
         data: {},
@@ -53,8 +77,6 @@ const Entries = () => {
       .catch((error) => console.error("Error adding password:", error));
   };
 
-  const editEntry = (id: string) => {};
-
   return (
     <div className="entries">
       <div id="entries-head">
@@ -62,10 +84,13 @@ const Entries = () => {
           <h2>Entries</h2>
           <Searchbar query={searchQuery} setQuery={setSearchQuery} />
         </div>
-        <button id="openNewEntryModal" onClick={openModal}>
+        <button id="openNewEntryModal" onClick={openNewEntryModal}>
           New
         </button>
-        <NewEntryModal isOpen={isModalOpen} onClose={closeModal} />
+        <NewEntryModal
+          isOpen={isNewEntryModalOpen}
+          onClose={closeNewEntryModal}
+        />
       </div>
       <ul>
         {entries.filter(filterSearch).map((entry, index) => (
@@ -81,7 +106,7 @@ const Entries = () => {
               </dialog>
               <button
                 onClick={() => {
-                  editEntry(entry.id);
+                  openEditModal(entry);
                 }}
               >
                 Edit
@@ -91,6 +116,14 @@ const Entries = () => {
           </div>
         ))}
       </ul>
+      {isEditEntryModalOpen && currentEntry && (
+        <EditEntryModal
+          isOpen={isEditEntryModalOpen}
+          entry={currentEntry}
+          onClose={closeEditModal}
+          onSave={saveEditedEntry}
+        />
+      )}
     </div>
   );
 };
