@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./Entries.css";
 import { v4 as uuid } from "uuid";
 import Searchbar from "../Searchbar/Searchbar";
+import NewEntryModal from "../Modals/NewEntryModal/NewEntryModal";
 
 // Define the shape of each password entry
 type Entry = { id: string; service: string; user: string; password: string };
@@ -17,6 +18,17 @@ const Entries = () => {
     password: "",
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filterSearch = (entry: Entry) => {
+    return entry.service.includes(searchQuery);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   useEffect(() => {
     axios
       .get("http://127.0.0.1:5000/api/entries")
@@ -25,15 +37,6 @@ const Entries = () => {
       })
       .catch((error) => console.error("Error fetching passwords:", error));
   }, []);
-
-  const addEntry = () => {
-    newEntry.id = uuid();
-    axios
-      .post("http://127.0.0.1:5000/api/entries", newEntry)
-      .then((response) => setEntries([...entries, response.data]))
-      .catch((error) => console.error("Error adding password:", error));
-    setNewEntry({ id: "", service: "", user: "", password: "" });
-  };
 
   const deleteEntry = (id: string) => {
     axios
@@ -55,46 +58,17 @@ const Entries = () => {
   return (
     <div className="entries">
       <div id="entries-head">
-        <h2>Entries</h2>
-        <Searchbar />
-        <button id="openNewEntryModal">New</button>
-      </div>
-      <div className="input-wrapper">
-        <input
-          type="text"
-          value={newEntry.service}
-          onChange={(e) =>
-            setNewEntry({ ...newEntry, service: e.target.value })
-          }
-          placeholder="Enter service"
-        />
-        <input
-          type="text"
-          value={newEntry.user}
-          onChange={(e) => setNewEntry({ ...newEntry, user: e.target.value })}
-          placeholder="Enter login"
-        />
-        <input
-          type="text"
-          value={newEntry.password}
-          onChange={(e) =>
-            setNewEntry({ ...newEntry, password: e.target.value })
-          }
-          placeholder="Enter password"
-        />
-        <button
-          onClick={addEntry}
-          disabled={
-            !newEntry.service.trim() ||
-            !newEntry.password.trim() ||
-            !newEntry.user.trim()
-          }
-        >
-          Add Entry
+        <div id="entries-head-left">
+          <h2>Entries</h2>
+          <Searchbar query={searchQuery} setQuery={setSearchQuery} />
+        </div>
+        <button id="openNewEntryModal" onClick={openModal}>
+          New
         </button>
+        <NewEntryModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
       <ul>
-        {entries.map((entry, index) => (
+        {entries.filter(filterSearch).map((entry, index) => (
           <div className="entry" key={index}>
             <div className="entry-info">
               <b>{entry.service}</b> | User: {entry.user} | Password:{" "}

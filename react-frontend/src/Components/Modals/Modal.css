@@ -1,5 +1,6 @@
+/* Fullscreen overlay */
 .modal-overlay {
-  position: fixed; /* Ensures it covers the entire viewport */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -8,26 +9,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Places it above other content */
+  z-index: 1000; /* Ensure it's on top of other elements */
 }
 
+/* Modal content */
 .modal-content {
+  position: relative;
   background-color: #ffffff; /* White background for contrast */
-  padding: 20px; /* Space inside the modal */
+  padding: 20px; /* Internal spacing */
   border-radius: 8px; /* Rounded corners */
-  max-width: 500px; /* Limit width */
-  width: 100%; /* Make it responsive */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for depth */
-  position: relative; /* Position relative for internal positioning */
-  z-index: 1001; /* Higher than overlay */
+  max-width: 500px; /* Limit modal width */
+  width: 90%; /* Responsive width */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  z-index: 1001; /* Place content above overlay */
 }
 
 .close-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#title {
+  font-size: larger;
 }

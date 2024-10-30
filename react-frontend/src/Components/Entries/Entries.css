@@ -67,8 +67,50 @@
   display: flex;
   gap: 5px;
 }
-
+/* Container styling for the entries header */
 #entries-head {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 10px 20px;
+  margin-bottom: 20px; /* Spacing from the entries list below */
+}
+
+/* Header title styling */
+#entries-head h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Search bar styling for consistent alignment */
+#entries-head input[type="text"] {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1rem;
+  width: 600px; /* Adjust based on your layout */
+  margin-left: 20px; /* Spacing from the button */
+}
+
+/* Styling for the 'New' button */
+#openNewEntryModal {
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #007bff; /* Primary button color */
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#openNewEntryModal:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+#entries-head-left {
+  display: flex;
 }
