@@ -27,7 +27,9 @@ const EditEntryModal: React.FC<EditEntryProps> = ({
     axios
       .put(`http://127.0.0.1:5000/api/entries/${entry.id}`, entry)
       .then((response) => {
-        onSave(response.data);
+        if (response.status == 200) {
+          onSave(entry);
+        }
       })
       .catch((error) => console.error("Error editing password:", error));
   };

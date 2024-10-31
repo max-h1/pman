@@ -64,12 +64,7 @@ const Entries = () => {
 
   const deleteEntry = (id: typeof uuid) => {
     axios
-      .delete(`http://127.0.0.1:5000/api/entries/${id}`, {
-        data: {},
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .delete(`http://127.0.0.1:5000/api/entries/${id}`)
       .then(() => {
         const updatedEntries = entries.filter((entry) => entry.id != id);
         setEntries(updatedEntries);

@@ -21,51 +21,57 @@ db = SQLAlchemy(app)
 
 class Entry(db.Model):
     __tablename__ = 'entries'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(128), primary_key=True)
     service = db.Column(db.String(128), index=True)
     user = db.Column(db.String(128))
     password = db.Column(db.String(128))
 
     def __repr__(self):
         return f'Entry: Service = {self.service} | User = {self.user}'
+    
+    def to_dict(self):
+        return {"id": self.id, "service": self.service, "user": self.user, "password": self.password}
 
 CORS(app)
 
-
-with open('entries.json', "r") as f:
-    entries = json.load(f)
-
-
-
 @app.route('/api/entries', methods=['GET'])
 def get_password():
-    return entries
+    entries = Entry.query.all()
+    entries_list = [entry.to_dict() for entry in entries]
+    return jsonify(entries_list)
 
 @app.route('/api/entries', methods=['POST'])
 def add_password():
     data = request.json
-    entries.append(data)
-    with open('entries.json', "w") as fw:
-        json.dump(entries, fw)
-    fw.close
-    return jsonify(data), 201
+    entry = Entry(id=data['id'], service=data['service'], user=data['user'], password=data['password'])
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify({"message": f"Entry with ID {id} added successfully."}), 200
 
 @app.route('/api/entries/<id>', methods=['DELETE'])
 def delete_password(id):
-    updated_entries = [entry for entry in entries if entry["id"] != id]
-    with open('entries.json', "w") as fw:
-        json.dump(updated_entries, fw)
-    fw.close
-    return updated_entries, 200
+    entry = db.session.get(Entry, id)
+
+    if entry:
+        db.session.delete(entry)
+        db.session.commit()
+        return jsonify({"message": f"Entry with ID {id} deleted successfully."}), 200
+    else:
+        return jsonify({"message": f"Entry with ID {id} not found."}), 404
 
 @app.route('/api/entries/<id>', methods=["PUT"])
 def edit_password(id):
-    updated_entry = request.data
-    [updated_entry for entry in entries if entry["id"] == id]
-    with open('entries.json', "w") as fw:
-        json.dump(entries, fw)
-    fw.close
-    return updated_entry, 200
+    entry = db.session.get(Entry, id)
+    data = request.json
+
+    if entry:
+        entry.service = data.get('service', entry.service)
+        entry.user = data.get('user', entry.user)
+        entry.password = data.get('password', entry.password)
+        db.session.commit()
+        return jsonify({"message": f"Entry with ID {id} updated successfully."}), 200
+    else:
+        return jsonify({"message": f"Entry with ID {id} not found."}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
