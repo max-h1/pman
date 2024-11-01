@@ -1,9 +1,11 @@
 import "./NewEntryModal.css";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 import Modal from "../Modal";
 import { ModalProps } from "../Modal";
+
+const API_URL = "http://localhost:5000";
 
 type Entry = { id: string; service: string; user: string; password: string };
 
@@ -18,7 +20,7 @@ const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const addEntry = () => {
     newEntry.id = uuid();
     axios
-      .post("http://127.0.0.1:5000/api/entries", newEntry)
+      .post(`${API_URL}/api/entries`, newEntry)
       .catch((error) => console.error("Error adding password:", error));
     setNewEntry({ id: "", service: "", user: "", password: "" });
     onClose();

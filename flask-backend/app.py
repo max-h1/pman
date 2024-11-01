@@ -9,14 +9,9 @@ app = Flask(__name__)
 
 load_dotenv()
 
-db_user = os.environ.get('DB_USER')
-db_password = os.environ['DB_PASSWORD']
-db_name = os.environ['DB_NAME']
-
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{db_user}:{db_password}@localhost/{db_name}'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional, to suppress warnings
 
-# Initialize the SQLAlchemy object
 db = SQLAlchemy(app)
 
 class Entry(db.Model):
@@ -32,7 +27,10 @@ class Entry(db.Model):
     def to_dict(self):
         return {"id": self.id, "service": self.service, "user": self.user, "password": self.password}
 
-CORS(app)
+with app.app_context():
+    db.create_all()
+
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/api/entries', methods=['GET'])
 def get_password():

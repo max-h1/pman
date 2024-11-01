@@ -1,5 +1,5 @@
 # Use Node.js base image
-FROM node:14
+FROM node
 
 # Set working directory
 WORKDIR /app
@@ -11,12 +11,12 @@ RUN npm install
 # Copy the rest of the frontend code
 COPY . .
 
-# Build the app for production
+# Build the app for development
 RUN npm run build
 
 # Serve the frontend app using a simple HTTP server
 RUN npm install -g serve
-CMD ["serve", "-s", "build"]
+CMD ["serve", "-s", "dist"]
 
 # Expose port for local access
 EXPOSE 3000

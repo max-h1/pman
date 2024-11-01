@@ -7,17 +7,14 @@ import NewEntryModal from "../Modals/NewEntryModal/NewEntryModal";
 import EditEntryModal from "../Modals/EditEntryModal/EditEntryModal";
 import { Entry } from "../../types";
 
+const API_URL = "http://localhost:5000";
+
 const Entries = () => {
   // Type the state variables to match PasswordEntry
   const [entries, setEntries] = useState<Entry[]>([]);
-  const [newEntry, setNewEntry] = useState<Entry>({
-    id: uuid,
-    service: "",
-    user: "",
-    password: "",
-  });
-
   const [searchQuery, setSearchQuery] = useState("");
+  const [isEditEntryModalOpen, setIsEditEntryModalOpen] = useState(false);
+  const [currentEntry, setCurrentEntry] = useState<Entry | null>(null);
 
   const filterSearch = (entry: Entry) => {
     return entry.service.includes(searchQuery);
@@ -27,9 +24,6 @@ const Entries = () => {
 
   const openNewEntryModal = () => setIsNewEntryModalOpen(true);
   const closeNewEntryModal = () => setIsNewEntryModalOpen(false);
-
-  const [isEditEntryModalOpen, setIsEditEntryModalOpen] = useState(false);
-  const [currentEntry, setCurrentEntry] = useState<Entry | null>(null); // Track entry being edited
 
   // Open the modal and set the entry to be edited
   const openEditModal = (entry: Entry) => {
@@ -55,7 +49,7 @@ const Entries = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/api/entries")
+      .get(`${API_URL}/api/entries`)
       .then((response) => {
         setEntries(response.data);
       })
@@ -64,7 +58,7 @@ const Entries = () => {
 
   const deleteEntry = (id: typeof uuid) => {
     axios
-      .delete(`http://127.0.0.1:5000/api/entries/${id}`)
+      .delete(`${API_URL}/api/entries/${id}`)
       .then(() => {
         const updatedEntries = entries.filter((entry) => entry.id != id);
         setEntries(updatedEntries);

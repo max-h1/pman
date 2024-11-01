@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/entries/entries.tsx","./src/components/modals/modal.tsx","./src/components/modals/editentrymodal/editentrymodal.tsx","./src/components/modals/newentrymodal/newentrymodal.tsx","./src/components/searchbar/searchbar.tsx","./src/components/sidebar/sidebar.tsx"],"version":"5.6.3"}
