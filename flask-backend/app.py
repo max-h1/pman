@@ -1,6 +1,6 @@
 import os
-from flask import jsonify, request, Flask
-from flask_cors import CORS
+from flask import jsonify, request, Flask, make_response
+from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 import json
 from dotenv import load_dotenv
@@ -16,7 +16,7 @@ db = SQLAlchemy(app)
 
 class Entry(db.Model):
     __tablename__ = 'entries'
-    id = db.Column(db.String(128), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     service = db.Column(db.String(128), index=True)
     user = db.Column(db.String(128))
     password = db.Column(db.String(128))
@@ -26,11 +26,27 @@ class Entry(db.Model):
     
     def to_dict(self):
         return {"id": self.id, "service": self.service, "user": self.user, "password": self.password}
+    
+class User(db.Model):
+    __tablename__ = 'users'
+    username = db.Column(db.String(128), primary_key=True, unique=True)
+    auth_hash = db.Column(db.String(128))
+
+    def __repr__(self):
+        return f'User: {self.username}'
+
+    
+with open('MOCK_DATA.json') as f:
+    data = json.load(f)
 
 with app.app_context():
     db.create_all()
+    for entry in data:
+        new_user = Entry(service=entry['service'], user=entry['user'], password=entry['password'])
+        db.session.add(new_user)
+    db.session.commit()
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, origins=["http://localhost:3000"])
 
 @app.route('/api/entries', methods=['GET'])
 def get_password():
@@ -41,7 +57,7 @@ def get_password():
 @app.route('/api/entries', methods=['POST'])
 def add_password():
     data = request.json
-    entry = Entry(id=data['id'], service=data['service'], user=data['user'], password=data['password'])
+    entry = Entry(service=data['service'], user=data['user'], password=data['password'])
     db.session.add(entry)
     db.session.commit()
     return jsonify({"message": f"Entry with ID {id} added successfully."}), 200

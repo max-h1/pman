@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Run the Flask app
-CMD ["flask", "run", "--host=127.0.0.1", "--debug"]
+CMD ["flask", "run", "--host=0.0.0.0", "--debug"]
 
 # Expose port for backend
 EXPOSE 5000

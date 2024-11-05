@@ -7,7 +7,7 @@ import NewEntryModal from "../Modals/NewEntryModal/NewEntryModal";
 import EditEntryModal from "../Modals/EditEntryModal/EditEntryModal";
 import { Entry } from "../../types";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://localhost:5001";
 
 const Entries = () => {
   // Type the state variables to match PasswordEntry
@@ -23,7 +23,10 @@ const Entries = () => {
   const [isNewEntryModalOpen, setIsNewEntryModalOpen] = useState(false);
 
   const openNewEntryModal = () => setIsNewEntryModalOpen(true);
-  const closeNewEntryModal = () => setIsNewEntryModalOpen(false);
+  const closeNewEntryModal = (newEntry: Entry) => {
+    setIsNewEntryModalOpen(false);
+    setEntries([...entries, newEntry]);
+  };
 
   // Open the modal and set the entry to be edited
   const openEditModal = (entry: Entry) => {
