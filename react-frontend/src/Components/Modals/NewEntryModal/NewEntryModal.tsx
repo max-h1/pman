@@ -4,22 +4,9 @@ import axios from "axios";
 import { v4 as uuid } from "uuid";
 import Modal from "../Modal";
 import { ModalProps } from "../Modal";
-
-const { pbkdf2 } = require("node:crypto");
+import { APIURL } from "../../../types";
 
 type Entry = { id: string; service: string; user: string; password: string };
-
-pbkdf2(
-  "secret",
-  "salt",
-  100000,
-  64,
-  "sha512",
-  (err: Error, derivedKey: Buffer) => {
-    if (err) throw err;
-    console.log(derivedKey.toString("hex")); // '3745e48...08d59ae'
-  }
-);
 
 const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [newEntry, setNewEntry] = useState<Entry>({
@@ -32,7 +19,7 @@ const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const addEntry = () => {
     newEntry.id = uuid();
     axios
-      .post(`http://localhost:5001/api/entries`, newEntry)
+      .post(`${APIURL}/api/entries`, newEntry)
       .catch((error) => console.error("Error adding password:", error));
     setNewEntry({ id: "", service: "", user: "", password: "" });
     onClose(newEntry);

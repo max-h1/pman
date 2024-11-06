@@ -6,3 +6,5 @@ export interface Entry {
   user: string;
   password: string;
 }
+
+export const APIURL = "http://localhost:5001";

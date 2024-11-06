@@ -5,9 +5,7 @@ import { v4 as uuid } from "uuid";
 import Searchbar from "../Searchbar/Searchbar";
 import NewEntryModal from "../Modals/NewEntryModal/NewEntryModal";
 import EditEntryModal from "../Modals/EditEntryModal/EditEntryModal";
-import { Entry } from "../../types";
-
-const API_URL = "http://localhost:5001";
+import { Entry, APIURL } from "../../types";
 
 const Entries = () => {
   // Type the state variables to match PasswordEntry
@@ -15,32 +13,29 @@ const Entries = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditEntryModalOpen, setIsEditEntryModalOpen] = useState(false);
   const [currentEntry, setCurrentEntry] = useState<Entry | null>(null);
+  const [isNewEntryModalOpen, setIsNewEntryModalOpen] = useState(false);
 
   const filterSearch = (entry: Entry) => {
     return entry.service.includes(searchQuery);
   };
 
-  const [isNewEntryModalOpen, setIsNewEntryModalOpen] = useState(false);
-
   const openNewEntryModal = () => setIsNewEntryModalOpen(true);
+
   const closeNewEntryModal = (newEntry: Entry) => {
     setIsNewEntryModalOpen(false);
     setEntries([...entries, newEntry]);
   };
 
-  // Open the modal and set the entry to be edited
   const openEditModal = (entry: Entry) => {
     setCurrentEntry(entry);
     setIsEditEntryModalOpen(true);
   };
 
-  // Close the modal
   const closeEditModal = () => {
     setIsEditEntryModalOpen(false);
     setCurrentEntry(null);
   };
 
-  // Save the edited entry and update the entries list
   const saveEditedEntry = (updatedEntry: Entry) => {
     setEntries(
       entries.map((entry) =>
@@ -52,7 +47,7 @@ const Entries = () => {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/entries`)
+      .get(`${APIURL}/api/entries`)
       .then((response) => {
         setEntries(response.data);
       })
@@ -61,7 +56,7 @@ const Entries = () => {
 
   const deleteEntry = (id: typeof uuid) => {
     axios
-      .delete(`${API_URL}/api/entries/${id}`)
+      .delete(`${APIURL}/api/entries/${id}`)
       .then(() => {
         const updatedEntries = entries.filter((entry) => entry.id != id);
         setEntries(updatedEntries);

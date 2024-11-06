@@ -4,6 +4,7 @@ import Modal, { ModalProps } from "../Modal";
 import axios from "axios";
 import { Entry } from "../../../types";
 import "../Modal.css";
+import { APIURL } from "../../../types";
 
 interface EditEntryProps extends ModalProps {
   entry: Entry;
@@ -24,7 +25,7 @@ const EditEntryModal: React.FC<EditEntryProps> = ({
   });
   const saveEntry = (entry: Entry) => {
     axios
-      .put(`http://localhost:5001/api/entries/${entry.id}`, entry)
+      .put(`${APIURL}/api/entries/${entry.id}`, entry)
       .then((response) => {
         if (response.status == 200) {
           onSave(entry);
