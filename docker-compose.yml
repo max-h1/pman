@@ -18,6 +18,8 @@ services:
       FLASK_ENV: development
       FLASK_DEBUG: 1
       DATABASE_URL: mysql+mysqlconnector://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
     depends_on:
       - db
     entrypoint:
