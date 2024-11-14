@@ -1,0 +1,11 @@
+section form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Optional: add spacing between items */
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Optional: add spacing between items */
+}
