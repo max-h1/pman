@@ -7,7 +7,6 @@ import EditEntryModal from "../Modals/EditEntryModal/EditEntryModal";
 import { Entry } from "../../types";
 
 const Entries = () => {
-  // Type the state variables to match PasswordEntry
   const [entries, setEntries] = useState<Entry[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditEntryModalOpen, setIsEditEntryModalOpen] = useState(false);
@@ -18,11 +17,14 @@ const Entries = () => {
     return entry.service.includes(searchQuery);
   };
 
+  const sortByService = (a: Entry, b: Entry): number => {
+    return a.service > b.service ? 1 : -1;
+  };
+
   const openNewEntryModal = () => setIsNewEntryModalOpen(true);
 
-  const closeNewEntryModal = (newEntry: Entry) => {
+  const closeNewEntryModal = () => {
     setIsNewEntryModalOpen(false);
-    setEntries([...entries, newEntry]);
   };
 
   const openEditModal = (entry: Entry) => {
@@ -36,12 +38,30 @@ const Entries = () => {
   };
 
   const saveEditedEntry = (updatedEntry: Entry) => {
+    axios
+      .put(`/api/entries/${updatedEntry.id}`, updatedEntry, {
+        withCredentials: true,
+      })
+      .catch((error) => console.error("Error editing password:", error));
     setEntries(
       entries.map((entry) =>
         entry.id === updatedEntry.id ? updatedEntry : entry
       )
     );
     closeEditModal();
+  };
+
+  const saveNewEntry = (newEntry: Entry) => {
+    
+    axios
+      .post(`/api/entries`, newEntry, { withCredentials: true })
+      .then((response) => {
+        newEntry.id = response?.data?.id;
+      })
+      .catch((error) => console.error("Error adding password:", error));
+
+    setEntries([...entries, newEntry]);
+    setIsNewEntryModalOpen(false);
   };
 
   useEffect(() => {
@@ -78,33 +98,37 @@ const Entries = () => {
         <NewEntryModal
           isOpen={isNewEntryModalOpen}
           onClose={closeNewEntryModal}
+          onConfirm={saveNewEntry}
         />
       </div>
       <ul>
-        {entries.filter(filterSearch).map((entry, index) => (
-          <div className="entry" key={index}>
-            <div className="entry-info">
-              <b>{entry.service}</b> | User: {entry.user}
+        {entries
+          .sort(sortByService)
+          .filter(filterSearch)
+          .map((entry, index) => (
+            <div className="entry" key={index}>
+              <div className="entry-info">
+                <b>{entry.service}</b> | User: {entry.user}
+              </div>
+              <div className="entry-options">
+                <button
+                  onClick={() => {
+                    openEditModal(entry);
+                  }}
+                >
+                  Edit
+                </button>
+                <button onClick={() => deleteEntry(entry.id)}>Delete</button>
+              </div>
             </div>
-            <div className="entry-options">
-              <button
-                onClick={() => {
-                  openEditModal(entry);
-                }}
-              >
-                Edit
-              </button>
-              <button onClick={() => deleteEntry(entry.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
+          ))}
       </ul>
       {isEditEntryModalOpen && currentEntry && (
         <EditEntryModal
           isOpen={isEditEntryModalOpen}
           entry={currentEntry}
           onClose={closeEditModal}
-          onSave={saveEditedEntry}
+          onConfirm={saveEditedEntry}
         />
       )}
     </div>

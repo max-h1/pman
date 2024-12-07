@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import { useAuth } from "../../Hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import { pbkdf2, strToAB, ABtoStr } from "../../../Utils/Encryption";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -18,10 +19,18 @@ const Login: React.FC = () => {
   const Attemptlogin = async (username: string, password: string) => {
     setLoading(true);
     setLoginError("");
+
+    const passwordBuf = strToAB(password);
+    const usernameBuf = strToAB(username);
+
+    const masterKey = await pbkdf2(passwordBuf, usernameBuf);
+    const mph: ArrayBuffer = await pbkdf2(masterKey, passwordBuf);
+    const mphStr = ABtoStr(mph);
+
     axios
       .post(
         "/api/auth/login",
-        { username, password },
+        { username, mph: mphStr },
         { withCredentials: true }
       )
       .then((response) => {

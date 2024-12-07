@@ -21,6 +21,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [auth, setAuth] = useState<boolean>(false);
+  const [sym]
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>

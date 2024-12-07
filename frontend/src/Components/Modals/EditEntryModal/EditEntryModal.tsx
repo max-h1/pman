@@ -7,14 +7,14 @@ import "../Modal.css";
 
 interface EditEntryProps extends ModalProps {
   entry: Entry;
-  onSave: (updatedEntry: Entry) => void;
+  onConfirm: (updatedEntry: Entry) => void;
 }
 
 const EditEntryModal: React.FC<EditEntryProps> = ({
   isOpen,
   onClose,
   entry,
-  onSave,
+  onConfirm,
 }) => {
   const [currentEntry, setCurrentEntry] = useState<Entry>({
     id: entry.id,
@@ -22,20 +22,10 @@ const EditEntryModal: React.FC<EditEntryProps> = ({
     user: entry.user,
     password: entry.password,
   });
-  const saveEntry = (entry: Entry) => {
-    axios
-      .put(`/api/entries/${entry.id}`, entry, { withCredentials: true })
-      .then((response) => {
-        if (response.status == 200) {
-          onSave(entry);
-        }
-      })
-      .catch((error) => console.error("Error editing password:", error));
-  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Edit Entry">
-      <form className="inputs" onSubmit={() => saveEntry(currentEntry)}>
+      <section className="inputs">
         <label htmlFor="service">Service:</label>
         <input
           id="service"
@@ -68,8 +58,8 @@ const EditEntryModal: React.FC<EditEntryProps> = ({
           placeholder="Enter password"
         />
         <button
-          type="button"
-          onClick={() => saveEntry(currentEntry)}
+          onClick={() => onConfirm(currentEntry)}
+          type="submit"
           disabled={
             !currentEntry.service.trim() ||
             !currentEntry.password.trim() ||
@@ -78,7 +68,7 @@ const EditEntryModal: React.FC<EditEntryProps> = ({
         >
           Confirm
         </button>
-      </form>
+      </section>
     </Modal>
   );
 };

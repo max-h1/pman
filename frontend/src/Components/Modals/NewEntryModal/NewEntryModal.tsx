@@ -4,7 +4,15 @@ import Modal from "../Modal";
 import { ModalProps } from "../Modal";
 import { Entry } from "../../../types";
 
-const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+interface NewEntryProps extends ModalProps {
+  onConfirm: (newEntry: Entry) => void;
+}
+
+const NewEntryModal: React.FC<NewEntryProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+}) => {
   const [newEntry, setNewEntry] = useState<Entry>({
     id: 0,
     service: "",
@@ -12,14 +20,7 @@ const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     password: "",
   });
 
-  const addEntry = () => {
-    axios
-      .post(`/api/entries`, newEntry, { withCredentials: true })
-      .then((response) => {
-        newEntry.id = response?.data?.id;
-      })
-      .catch((error) => console.error("Error adding password:", error));
-    onClose(newEntry);
+  const clearFields = () => {
     setNewEntry({
       id: 0,
       service: "",
@@ -27,9 +28,10 @@ const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       password: "",
     });
   };
+
   return (
     <Modal title="New Entry" isOpen={isOpen} onClose={onClose}>
-      <form className="inputs">
+      <section className="inputs">
         <label htmlFor="service">Service:</label>
         <input
           id="service"
@@ -59,7 +61,10 @@ const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           placeholder="Enter password"
         />
         <button
-          onClick={addEntry}
+          onClick={() => {
+            clearFields();
+            onConfirm(newEntry);
+          }}
           disabled={
             !newEntry.service.trim() ||
             !newEntry.password.trim() ||
@@ -68,7 +73,7 @@ const NewEntryModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         >
           Confirm
         </button>
-      </form>
+      </section>
     </Modal>
   );
 };

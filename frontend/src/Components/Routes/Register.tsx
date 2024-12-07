@@ -8,6 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Register.css";
 import { Link } from "react-router-dom";
 import axios from "../../API/axios";
+import {
+  ABtoStr,
+  encryptAES,
+  generateSymKey,
+  hdkf,
+  pbkdf2,
+  strToAB,
+} from "../../Utils/Encryption";
 import { AxiosError } from "axios";
 
 const REGISTER_URL = "/api/auth/register";
@@ -63,10 +71,25 @@ const Register: React.FC = () => {
       return;
     }
 
+    const passwordBuf = strToAB(pwd);
+    const usernameBuf = strToAB(user);
+
+    const masterKey = await pbkdf2(passwordBuf, usernameBuf);
+    const stretchedMasterKey = await hdkf(masterKey);
+    const mph = await pbkdf2(masterKey, passwordBuf);
+    const symkey = await generateSymKey();
+
+    const { encrypted: psk, iv: pskiv } = await encryptAES(symkey, masterKey);
+
     try {
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ user, password: pwd })
+        JSON.stringify({
+          user: user,
+          psk: ABtoStr(psk),
+          pskiv: ABtoStr(pskiv),
+          mph: ABtoStr(mph),
+        })
       );
       setSuccess(response.status === 200);
     } catch (error) {
