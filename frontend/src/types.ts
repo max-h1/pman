@@ -1,8 +1,9 @@
 export interface Entry {
-  id: number;
-  service: string;
-  user: string;
-  password: string;
+	id: number;
+	service: string;
+	user: string;
+	password: string;
+	iv: string;
 }
 
-export const APIURL = "http://localhost:5001";
+export const APIURL = 'http://localhost:5001';

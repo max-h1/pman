@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -2.416 328.319 296.283">
+  <rect style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 5px; stroke-linejoin: round;" x="19.986" width="306.456" height="291.672" rx="10" ry="10"/>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 6px;" cx="173.215" cy="145.836" rx="73.353" ry="73.625"/>
+  <polyline style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);" points="189.177001953125 153.2469940185547"/>
+  <rect style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 5px; transform-origin: 20.068px 75.412px 0px;" x="1.149" y="37.768" width="37.838" height="75.284" rx="10" ry="10"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px;" x1="173.215" y1="50.145" x2="173.215" y2="94.32"/>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: none; stroke-width: 6px;" cx="173.215" cy="145.836" rx="27.752" ry="27.571"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px;" x1="173.215" y1="195.926" x2="173.215" y2="240.101"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px; transform-origin: 246.788px 145.021px 0px;" x1="268.794" y1="145.836" x2="224.782" y2="145.836"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px; transform-origin: 90.669px 142.393px 0px;" x1="121.74" y1="145.836" x2="77.728" y2="145.837"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px; transform-origin: 64.054px 179.352px 0px;" x1="136.77" y1="109.737" x2="105.649" y2="78.501"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px; transform-origin: 190.02px 208.027px 0px;" x1="241.269" y1="213.412" x2="210.148" y2="182.176"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px; transform-origin: 182.059px 69.587px 0px;" x1="323.899" y1="147.459" x2="292.663" y2="116.338" transform="matrix(0, 1, -1, 0, 0, 0)"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 5px; transform-origin: 286.636px -34.046px 0px;" x1="428.476" y1="43.826" x2="397.24" y2="12.705" transform="matrix(0, 1, -1, 0, 0, 0)"/>
+  <rect style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 5px; transform-origin: 18.919px 211.913px 0px;" y="174.268" width="37.838" height="75.284" rx="10" ry="10"/>
+</svg>

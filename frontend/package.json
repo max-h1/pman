@@ -1,40 +1,50 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.6.0",
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "@types/node": "^22.9.0",
-    "axios": "^1.7.7",
-    "pbkdf2": "^3.1.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^9.13.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.13",
-    "globals": "^15.11.0",
-    "rollup": "^4.26.0",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.10.0",
-    "vite": "^5.4.9"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-arm64-gnu": "^4.26.0"
-  }
+	"name": "frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"lint": "eslint .",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^6.6.0",
+		"@fortawesome/free-solid-svg-icons": "^6.6.0",
+		"@fortawesome/react-fontawesome": "^0.2.2",
+		"@types/node": "^22.9.0",
+		"axios": "^1.7.7",
+		"buffer": "6.0.3",
+		"pbkdf2": "^3.1.2",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-icons": "^5.5.0",
+		"react-router-dom": "^6.28.0"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.13.0",
+		"@types/react": "^18.3.11",
+		"@types/react-dom": "^18.3.1",
+		"@vitejs/plugin-react": "^4.3.3",
+		"eslint": "^9.13.0",
+		"eslint-plugin-react-hooks": "^5.0.0",
+		"eslint-plugin-react-refresh": "^0.4.13",
+		"globals": "^15.11.0",
+		"rollup": "^4.26.0",
+		"typescript": "~5.6.2",
+		"typescript-eslint": "^8.10.0",
+		"vite": "^5.4.9"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-arm64-gnu": "^4.26.0"
+	},
+	"prettier": {
+		"tabWidth": 2,
+		"singleQuote": true,
+		"bracketSameLine": true,
+		"printWidth": 100,
+		"singleAttributePerLine": true,
+		"useTabs": true
+	}
 }

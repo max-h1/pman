@@ -4,7 +4,7 @@ from flask import jsonify, request, Flask, session
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt, set_access_cookies
+from flask_jwt_extended import set_access_cookies
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from datetime import datetime
@@ -15,7 +15,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-print(os.getenv('DATABASE_URL'))
+# print(os.getenv('DATABASE_URL'))
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://development:beenis@db/pman"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional, to suppress warnings
@@ -60,7 +60,7 @@ class Entry(db.Model):
         return f'Entry: Service = {self.service} | User = {self.username}'
     
     def to_dict(self):
-        return {"id": self.id, "service": self.service, "user": self.username, "password": self.password}
+        return {"id": self.id, "service": self.service, "user": self.username, "password": self.password, "iv": self.iv}
 
 SESSION_TIMEOUT = timedelta(minutes=5)
 
@@ -92,7 +92,6 @@ def login():
     mph = request.json['mph']
 
     if not username or not mph:
-
         return jsonify({'message': 'Username and/or password not provided'}), 401
     
     user = User.query.filter_by(username=username).first()
@@ -150,14 +149,17 @@ def get_password():
 def add_password():
     user_id = session['user_id']
     data = request.json
+    app.logger.info(str(data['iv']))
     entry = Entry(
         service=str(data['service']),
         username=str(data['user']),
         password=str(data['password']),
-        user_id=user_id)
+        user_id=user_id,
+        iv=str(data['iv']))
+    app.logger.info(str(entry))
     db.session.add(entry)
     db.session.commit()
-    return jsonify({"message": f"Entry added successfully.", "id": entry.id}), 200
+    return jsonify(entry.to_dict()), 200
 
 @app.route('/api/entries/<entry_id>', methods=['DELETE'])
 @private
@@ -183,6 +185,7 @@ def edit_password(entry_id):
         entry.service = data['service']
         entry.username = data['user']
         entry.password = data['password']
+        entry.iv = data['iv']
         db.session.commit()
         return jsonify({"message": f"Entry with ID {entry_id} updated successfully."}), 200
     else:
